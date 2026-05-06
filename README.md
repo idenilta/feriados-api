@@ -3,9 +3,9 @@ Consumo de API de Feriados
 Este projeto foi desenvolvido para consumir uma API de feriados nacionais utilizando JavaScript.
 
  Funcionalidades
-- Inserção de ano
+- Adicionar ano
 - Consulta de feriados via API
-- Exibição dos resultados em interface web
+- Exibir os resultados em interface web
 
  API utilizada
 https://brasilapi.com.br/api/feriados/v1/{ano}
