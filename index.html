@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Feriados Nacionais</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 350px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #4facfe;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #00c6ff;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    li {
+      background: #f1f1f1;
+      margin: 5px 0;
+      padding: 8px;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .loading {
+      color: #555;
+      font-size: 14px;
+    }
+
+    .erro {
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>📅 Feriados Nacionais</h1>
+
+    <input type="number" id="ano" placeholder="Digite o ano">
+    <br>
+    <button onclick="buscarFeriados()">Procurar</button>
+
+    <p id="status"></p>
+
+    <ul id="lista"></ul>
+  </div>
+
+  <script>
+    function buscarFeriados() {
+      const ano = document.getElementById("ano").value;
+      const lista = document.getElementById("lista");
+      const status = document.getElementById("status");
+
+      if (!ano) {
+        status.textContent = "Por favor, digite um ano.";
+        status.className = "erro";
+        return;
+      }
+
+      status.textContent = "Carregando...";
+      status.className = "loading";
+      lista.innerHTML = "";
+
+      const url = `https://brasilapi.com.br/api/feriados/v1/${ano}`;
+
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error("Erro na API");
+          return res.json();
+        })
+        .then(dados => {
+          status.textContent = "";
+          
+          dados.forEach(f => {
+            const item = document.createElement("li");
+            item.textContent = `${f.date} - ${f.name}`;
+            lista.appendChild(item);
+          });
+        })
+        .catch(() => {
+          status.textContent = "Erro ao buscar dados.";
+          status.className = "erro";
+        });
+    }
+  </script>
+
+</body>
+</html>
